@@ -15,7 +15,6 @@ node_modules/
 .npm
 
 # dotenv environment variables file
-.env
 
 # Build / Dist
 dist
@@ -41,3 +40,4 @@ admin/public/assets
 
 # Admin specific development files
 admin/storage
+config.bat
