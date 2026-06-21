@@ -1,5 +1,15 @@
 # Release Notes
 
+## Unreleased
+
+### Features
+- **Operations**: Added offline-ready disaster recovery tooling with new backup, restore, and recovery verification scripts for `/opt/project-nomad`.
+
+### Bug Fixes
+
+### Improvements
+- **Documentation**: Added a disaster recovery runbook and expanded README helper-script docs for outage response and restore workflows.
+
 ## Version 1.30.0 - March 20, 2026
 
 ### Features

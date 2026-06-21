@@ -36,6 +36,10 @@ SIDECAR_UPDATER_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solution
 START_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/start_nomad.sh"
 STOP_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/stop_nomad.sh"
 UPDATE_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/update_nomad.sh"
+BACKUP_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/backup_nomad.sh"
+RESTORE_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/restore_nomad.sh"
+VERIFY_RECOVERY_SCRIPT_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/verify_nomad_recovery.sh"
+DISASTER_RUNBOOK_URL="https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/disaster-recovery-runbook.md"
 script_option_debug='true'
 accepted_terms='false'
 local_ip_address=''
@@ -445,6 +449,10 @@ download_helper_scripts() {
   local start_script_path="${NOMAD_DIR}/start_nomad.sh"
   local stop_script_path="${NOMAD_DIR}/stop_nomad.sh"
   local update_script_path="${NOMAD_DIR}/update_nomad.sh"
+  local backup_script_path="${NOMAD_DIR}/backup_nomad.sh"
+  local restore_script_path="${NOMAD_DIR}/restore_nomad.sh"
+  local verify_recovery_script_path="${NOMAD_DIR}/verify_nomad_recovery.sh"
+  local disaster_runbook_path="${NOMAD_DIR}/disaster-recovery-runbook.md"
 
   echo -e "${YELLOW}#${RESET} Downloading helper scripts...\\n"
   if ! curl -fsSL "$START_SCRIPT_URL" -o "$start_script_path"; then
@@ -465,7 +473,30 @@ download_helper_scripts() {
   fi
   chmod +x "$update_script_path"
 
-  echo -e "${GREEN}#${RESET} Helper scripts downloaded successfully to $start_script_path, $stop_script_path, and $update_script_path.\\n"
+  if ! curl -fsSL "$BACKUP_SCRIPT_URL" -o "$backup_script_path"; then
+    echo -e "${RED}#${RESET} Failed to download the backup script. Please check the URL and try again."
+    exit 1
+  fi
+  chmod +x "$backup_script_path"
+
+  if ! curl -fsSL "$RESTORE_SCRIPT_URL" -o "$restore_script_path"; then
+    echo -e "${RED}#${RESET} Failed to download the restore script. Please check the URL and try again."
+    exit 1
+  fi
+  chmod +x "$restore_script_path"
+
+  if ! curl -fsSL "$VERIFY_RECOVERY_SCRIPT_URL" -o "$verify_recovery_script_path"; then
+    echo -e "${RED}#${RESET} Failed to download the recovery verification script. Please check the URL and try again."
+    exit 1
+  fi
+  chmod +x "$verify_recovery_script_path"
+
+  if ! curl -fsSL "$DISASTER_RUNBOOK_URL" -o "$disaster_runbook_path"; then
+    echo -e "${RED}#${RESET} Failed to download the disaster recovery runbook. Please check the URL and try again."
+    exit 1
+  fi
+
+  echo -e "${GREEN}#${RESET} Helper files downloaded successfully to:\\n  - $start_script_path\\n  - $stop_script_path\\n  - $update_script_path\\n  - $backup_script_path\\n  - $restore_script_path\\n  - $verify_recovery_script_path\\n  - $disaster_runbook_path\\n"
 }
 
 start_management_containers() {

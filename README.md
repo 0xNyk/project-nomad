@@ -144,28 +144,45 @@ Use the format `- **Area**: Description` to stay consistent with existing entrie
 Project N.O.M.A.D. is licensed under the [Apache License 2.0](LICENSE).
 
 ## Helper Scripts
-Once installed, Project N.O.M.A.D. has a few helper scripts should you ever need to troubleshoot issues or perform maintenance that can't be done through the Command Center. All of these scripts are found in Project N.O.M.A.D.'s install directory, `/opt/project-nomad`
+Once installed, Project N.O.M.A.D. includes helper scripts for maintenance, outage response, and disaster recovery. All helper files are in `/opt/project-nomad`.
 
-###
-
-###### Start Script - Starts all installed project containers
+###### Start Script — Starts all installed project containers
 ```bash
 sudo bash /opt/project-nomad/start_nomad.sh
 ```
-###
 
-###### Stop Script - Stops all installed project containers
+###### Stop Script — Stops all installed project containers
 ```bash
 sudo bash /opt/project-nomad/stop_nomad.sh
 ```
-###
 
-###### Update Script - Attempts to pull the latest images for the Command Center and its dependencies (i.e. mysql) and recreate the containers. Note: this *only* updates the Command Center containers. It does not update the installable application containers - that should be done through the Command Center UI
+###### Update Script — Pulls the latest Command Center/dependency images and recreates management containers
+Note: this updates management containers only. Installable app containers should still be updated from the Command Center UI.
 ```bash
 sudo bash /opt/project-nomad/update_nomad.sh
 ```
 
-###### Uninstall Script - Need to start fresh? Use the uninstall script to make your life easy. Note: this cannot be undone!
+###### Backup Script — Creates a restorable backup archive (use `--include-images` for offline-ready backups)
+```bash
+sudo bash /opt/project-nomad/backup_nomad.sh --include-images
+```
+
+###### Restore Script — Restores from a backup archive
+```bash
+sudo bash /opt/project-nomad/restore_nomad.sh --backup /path/to/nomad-backup-YYYYMMDD_HHMMSS.tar.gz
+```
+
+###### Recovery Verification Script — Validates core services after restore/outage recovery
+```bash
+sudo bash /opt/project-nomad/verify_nomad_recovery.sh
+```
+
+###### Disaster Recovery Runbook — Step-by-step outage/restore procedures
+```bash
+cat /opt/project-nomad/disaster-recovery-runbook.md
+```
+
+###### Uninstall Script — Need to start fresh? Use the uninstall script. Note: this cannot be undone.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/uninstall_nomad.sh -o uninstall_nomad.sh && sudo bash uninstall_nomad.sh
 ```
